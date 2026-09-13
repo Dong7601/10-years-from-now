@@ -14,6 +14,16 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const realtimeModel = process.env.REALTIME_MODEL || "gpt-realtime-2.1";
 const textModel = process.env.TEXT_MODEL || "gpt-5.6-sol";
 const apiKey = process.env.OPENAI_API_KEY;
+// 公開デモ用の許可ホスト。Render では RENDER_EXTERNAL_HOSTNAME が自動で入る。
+const publicHost = (
+  process.env.PUBLIC_HOST ||
+  process.env.RENDER_EXTERNAL_HOSTNAME ||
+  ""
+).trim();
+function hostAllowed(host) {
+  if (/^(localhost|127\.0\.0\.1)(:\d+)?$/.test(host)) return true;
+  return Boolean(publicHost) && host === publicHost;
+}
 const rates = new Map();
 function reply(res, status, body, type = "application/json") {
   res.writeHead(status, {
@@ -98,12 +108,17 @@ export function createServer() {
       const url = new URL(req.url, "http://localhost");
       if (url.pathname.startsWith("/api/tutor/")) {
         const host = req.headers.host || "";
-        // ローカルデモ用: 他サイトからの課金API利用、DNS rebindingを拒否。
-        if (!/^(localhost|127\.0\.0\.1)(:\d+)?$/.test(host))
+        // 他サイトからの課金API利用、DNS rebindingを拒否。
+        // 許可するのは localhost と、PUBLIC_HOST / RENDER_EXTERNAL_HOSTNAME で指定した公開ホストだけ。
+        if (!hostAllowed(host))
           return reply(res, 403, {
-            error: "このサーバーはローカルデモ専用です。",
+            error: "このサーバーはローカルデモ専用です。公開時は PUBLIC_HOST を設定してください。",
           });
-        if (req.headers.origin && req.headers.origin !== `http://${host}`)
+        if (
+          req.headers.origin &&
+          req.headers.origin !== `http://${host}` &&
+          req.headers.origin !== `https://${host}`
+        )
           return reply(res, 403, {
             error: "別サイトからのAPI呼び出しは許可されていません。",
           });
@@ -312,10 +327,13 @@ export function createServer() {
 }
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const port = Number(process.env.PORT || 3000);
-  const host = process.env.HOST || "127.0.0.1";
+  // 公開ホストが設定されていれば全インターフェースで待ち受ける（Render 等）。
+  const host = process.env.HOST || (publicHost ? "0.0.0.0" : "127.0.0.1");
   createServer().listen(port, host, () =>
     console.log(
-      `GROWBOOK: http://localhost:${port}/tutor/ （APIキー${apiKey ? "設定済み" : "未設定"}）`,
+      `GROWBOOK: http://localhost:${port}/tutor/ （APIキー${apiKey ? "設定済み" : "未設定"}` +
+        (publicHost ? `／公開ホスト: https://${publicHost}/tutor/` : "") +
+        "）",
     ),
   );
 }
