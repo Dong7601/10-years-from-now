@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>問題集 ｜ 中3理科「化学変化とイオン」（モック）</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --paper:#fff; --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb;
+    --accent:#2563eb; --accent-soft:#e8f0fe; --ai:#7c3aed; --ai-soft:#f3eefe; --ai-line:#d9ccf7;
+    --ok:#16a34a; --ok-soft:#ecfdf5; --ng:#dc2626; --ng-soft:#fef2f2; --warn:#d97706; --warn-soft:#fffbeb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;line-height:1.8;font-size:16px}
+  header.top{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;align-items:center;gap:14px}
+  header.top .logo{font-weight:700;color:var(--accent)}
+  header.top .crumb{color:var(--muted);font-size:14px}
+  header.top .crumb b{color:var(--ink)}
+  header.top .who{margin-left:auto;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px}
+  header.top .who .av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#60a5fa,#a78bfa);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px}
+  .wrap{max-width:860px;margin:0 auto;padding:20px 24px 80px}
+
+  .summary{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 22px;display:flex;gap:22px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
+  .summary h1{margin:0;font-size:20px;flex:1 1 100%}
+  .stat{display:flex;flex-direction:column;min-width:100px}
+  .stat .v{font-size:24px;font-weight:700}
+  .stat .k{font-size:12px;color:var(--muted)}
+  .stat .v.ok{color:var(--ok)} .stat .v.ng{color:var(--ng)}
+  .progress{flex:1 1 100%;display:flex;gap:4px}
+  .progress span{flex:1;height:8px;border-radius:4px;background:var(--ok)}
+  .progress span.ng{background:var(--ng)}
+
+  .q{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:14px;position:relative}
+  .q.ng{border-color:#fecaca;background:linear-gradient(180deg,#fff,#fffafa)}
+  .q .qh{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+  .q .num{font-weight:700;color:var(--accent);font-size:15px}
+  .q .type{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
+  .q .meta{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:13px;color:var(--muted)}
+  .q .meta .time{font-variant-numeric:tabular-nums}
+  .q .meta .time.slow{color:var(--warn);font-weight:700}
+  .q .meta .res{font-weight:700;font-size:16px}
+  .q .meta .res.ok{color:var(--ok)} .q .meta .res.ng{color:var(--ng)}
+  .q .text{margin:0 0 10px;font-size:16px}
+  .q .fig{margin:6px 0 12px;text-align:center}
+  .choices{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media (max-width:600px){.choices{grid-template-columns:1fr}}
+  .choices li{border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:15px;display:flex;gap:8px;align-items:center;background:#fff}
+  .choices li .m{width:22px;height:22px;border-radius:50%;border:1px solid #cbd5e1;display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);flex:none}
+  .choices li.picked{border-color:var(--accent);background:var(--accent-soft)}
+  .choices li.picked .m{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .choices li.picked.wrong{border-color:var(--ng);background:var(--ng-soft)}
+  .choices li.picked.wrong .m{background:var(--ng);border-color:var(--ng)}
+  .choices li.answer{outline:2px dashed var(--ok);outline-offset:-2px}
+  .choices li .tag{margin-left:auto;font-size:11px;color:var(--ok);white-space:nowrap}
+  .free{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:#fcfcfd;min-height:56px;font-family:"Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;font-size:16px;color:#1e3a8a}
+  .free.wrong{border-color:#fecaca;color:#7f1d1d}
+  .free .lbl{font-size:11px;color:var(--muted);font-family:inherit;display:block;margin-bottom:2px}
+  .model{font-size:13px;color:var(--muted);margin-top:6px}
+  .model b{color:var(--ok)}
+  .ai-tag{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:13px;background:var(--ai-soft);color:#4c1d95;border:1px solid var(--ai-line);border-radius:999px;padding:4px 12px}
+  .ai-tag .lnk{color:var(--ai);text-decoration:underline;font-size:12px;margin-left:4px}
+  .ai-tag.same{border-style:dashed}
+
+  .finish{margin:28px 0 18px;text-align:center}
+  .btn{display:inline-block;padding:12px 32px;border-radius:999px;font-weight:700;font-size:16px;background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(37,99,235,.3);cursor:pointer}
+  .btn.done{background:#94a3b8;box-shadow:none}
+  .btn.sub{background:#fff;color:var(--accent);border:1px solid var(--accent);box-shadow:none;font-size:14px;padding:8px 18px}
+  .btn.ai{background:var(--ai);box-shadow:0 4px 14px rgba(124,58,237,.3);font-size:14px;padding:8px 18px}
+  .finish .hint{font-size:12px;color:var(--muted);margin-top:6px}
+
+  .review{background:var(--paper);border:1px solid var(--ai-line);border-radius:16px;overflow:hidden;margin-top:14px}
+  .review .hd{background:var(--ai-soft);padding:12px 20px;display:flex;align-items:center;gap:10px}
+  .review .hd .av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#c084fc);display:flex;align-items:center;justify-content:center;font-size:18px}
+  .review .hd .nm{font-weight:700}
+  .review .hd .st{font-size:12px;color:var(--muted)}
+  .review .log{padding:16px 20px;display:flex;flex-direction:column;gap:10px}
+  .msg{max-width:80%;padding:10px 14px;border-radius:14px;font-size:15px;line-height:1.7}
+  .msg.ai{background:#faf8ff;border:1px solid var(--ai-line);border-bottom-left-radius:4px;align-self:flex-start}
+  .msg.me{background:var(--accent);color:#fff;border-bottom-right-radius:4px;align-self:flex-end}
+  .msg .evi{display:block;font-size:12px;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:8px;padding:4px 8px;margin-top:6px}
+  .review .in{border-top:1px solid var(--line);padding:10px 16px;display:flex;gap:8px;align-items:center}
+  .review .in .box{flex:1;border:1px solid var(--line);border-radius:999px;padding:8px 14px;color:var(--muted);font-size:14px;background:#fff}
+  .review .in .mic,.review .in .send{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);background:#fff}
+  .review .actions{border-top:1px solid var(--line);padding:14px 16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:#fcfcfd}
+  .review .actions .note{font-size:12px;color:var(--muted);flex:1 1 100%}
+  .mock-banner{position:fixed;bottom:12px;left:12px;font-size:11px;color:#fff;background:#111827;opacity:.7;padding:3px 10px;border-radius:999px;z-index:20}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="logo">📘 まなびレイヤー</div>
+  <div class="crumb">中学3年 理科 ／ <b>化学変化とイオン</b> ／ 問題集（確認テスト）</div>
+  <div class="who"><span class="av">タ</span>タケシ（サッカー部）</div>
+</header>
+
+<div class="wrap">
+
+  <div class="summary">
+    <h1>確認テスト　化学変化とイオン（全10問）</h1>
+    <div class="stat"><span class="v ok">7<span style="font-size:14px;color:#6b7280"> /10</span></span><span class="k">正解</span></div>
+    <div class="stat"><span class="v">13:04</span><span class="k">合計時間</span></div>
+    <div class="stat"><span class="v ng">3</span><span class="k">まちがい</span></div>
+    <div class="stat"><span class="v" style="color:#7c3aed">2</span><span class="k">AIつまずき候補</span></div>
+    <div class="progress"><span></span><span></span><span class="ng"></span><span></span><span></span><span class="ng"></span><span></span><span class="ng"></span><span></span><span></span></div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="q">
+    <div class="qh"><span class="num">第1問</span><span class="type">4択</span><div class="meta"><span class="time">⏱ 0分38秒</span><span class="res ok">○</span></div></div>
+    <p class="text">次のうち、水にとかしたときに<b>電流が流れる</b>物質はどれか。</p>
+    <ul class="choices">
+      <li class="picked"><span class="m">ア</span>塩化ナトリウム</li>
+      <li><span class="m">イ</span>砂糖</li>
+      <li><span class="m">ウ</span>エタノール</li>
+      <li><span class="m">エ</span>デンプン</li>
+    </ul>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q">
+    <div class="qh"><span class="num">第2問</span><span class="type">4択</span><div class="meta"><span class="time">⏱ 0分55秒</span><span class="res ok">○</span></div></div>
+    <p class="text">原子が電子を<b>1個失った</b>とき、その粒子はどうなるか。</p>
+    <ul class="choices">
+      <li class="picked"><span class="m">ア</span>＋の電気を帯びた陽イオンになる</li>
+      <li><span class="m">イ</span>－の電気を帯びた陰イオンになる</li>
+      <li><span class="m">ウ</span>電気を帯びない別の原子になる</li>
+      <li><span class="m">エ</span>何も変わらない</li>
+    </ul>
+  </div>
+
+  <!-- Q3 ✗ demo core -->
+  <div class="q ng">
+    <div class="qh"><span class="num">第3問</span><span class="type">4択</span><div class="meta"><span class="time slow">⏱ 2分14秒</span><span class="res ng">✗</span></div></div>
+    <p class="text">ダニエル電池で、亜鉛板から銅板へ<b>電子</b>はどこを通って移動するか。</p>
+    <div class="fig">
+      <svg viewBox="0 0 420 120" width="420">
+        <rect x="40" y="50" width="340" height="60" rx="8" fill="#e0f2fe" stroke="#64748b"/>
+        <rect x="207" y="50" width="6" height="60" fill="#d6b48a" stroke="#a16207"/>
+        <rect x="90" y="30" width="10" height="70" fill="#9ca3af" stroke="#4b5563"/><text x="95" y="24" font-size="10" text-anchor="middle">亜鉛板</text>
+        <rect x="320" y="30" width="10" height="70" fill="#d97706" stroke="#92400e"/><text x="325" y="24" font-size="10" text-anchor="middle">銅板</text>
+        <line x1="95" y1="30" x2="95" y2="10" stroke="#111" stroke-width="2"/><line x1="325" y1="30" x2="325" y2="10" stroke="#111" stroke-width="2"/><line x1="95" y1="10" x2="325" y2="10" stroke="#111" stroke-width="2"/>
+        <text x="210" y="8" font-size="9" text-anchor="middle" fill="#6b7280">導線</text>
+        <text x="210" y="118" font-size="9" text-anchor="middle" fill="#a16207">素焼きの板</text>
+        <text x="130" y="85" font-size="9" fill="#475569">硫酸亜鉛水溶液</text><text x="240" y="85" font-size="9" fill="#0369a1">硫酸銅水溶液</text>
+      </svg>
+    </div>
+    <ul class="choices">
+      <li class="answer"><span class="m">ア</span>導線<span class="tag">正解</span></li>
+      <li class="picked wrong"><span class="m">イ</span>水溶液の中</li>
+      <li><span class="m">ウ</span>素焼きの板</li>
+      <li><span class="m">エ</span>空気中</li>
+    </ul>
+    <div class="ai-tag">🤖 つまずき候補：<b>電子とイオンの移動経路の混同</b><span class="lnk">教科書 §4 の該当段落へ</span></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q">
+    <div class="qh"><span class="num">第4問</span><span class="type">4択</span><div class="meta"><span class="time">⏱ 1分05秒</span><span class="res ok">○</span></div></div>
+    <p class="text">塩化銅水溶液を電気分解したとき、<b>陰極</b>で起こることはどれか。</p>
+    <ul class="choices">
+      <li class="picked"><span class="m">ア</span>赤色の銅が付着する</li>
+      <li><span class="m">イ</span>塩素が発生する</li>
+      <li><span class="m">ウ</span>水素が発生する</li>
+      <li><span class="m">エ</span>酸素が発生する</li>
+    </ul>
+  </div>
+
+  <!-- Q5 電離式 記述 -->
+  <div class="q">
+    <div class="qh"><span class="num">第5問</span><span class="type">記述・電離式</span><div class="meta"><span class="time">⏱ 1分30秒</span><span class="res ok">○</span></div></div>
+    <p class="text">塩化銅 CuCl₂ が水にとけて電離するようすを、<b>電離式</b>で書きなさい。</p>
+    <div class="free"><span class="lbl">タケシの解答（手書き入力）</span>CuCl₂ → Cu²⁺ ＋ 2Cl⁻</div>
+    <div class="model">模範解答：<b>CuCl₂ → Cu²⁺ ＋ 2Cl⁻</b>　（＋2 と －1×2 で電気がつり合っている ✔）</div>
+  </div>
+
+  <!-- Q6 ✗ -->
+  <div class="q ng">
+    <div class="qh"><span class="num">第6問</span><span class="type">4択</span><div class="meta"><span class="time slow">⏱ 1分48秒</span><span class="res ng">✗</span></div></div>
+    <p class="text">ダニエル電池の<b>素焼きの板</b>は、何のためにあるか。</p>
+    <ul class="choices">
+      <li class="answer"><span class="m">ア</span>イオンを通して、電気のかたよりを解消するため<span class="tag">正解</span></li>
+      <li><span class="m">イ</span>2つの水溶液を完全に分けて、何も通さないため</li>
+      <li class="picked wrong"><span class="m">ウ</span>電子を通して、電流を流すため</li>
+      <li><span class="m">エ</span>水溶液の温度を一定に保つため</li>
+    </ul>
+    <div class="ai-tag same">🤖 つまずき候補：<b>電子とイオンの移動経路の混同</b>（第3問と同じ誤解）<span class="lnk">教科書 §4 へ</span></div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q">
+    <div class="qh"><span class="num">第7問</span><span class="type">4択</span><div class="meta"><span class="time">⏱ 0分47秒</span><span class="res ok">○</span></div></div>
+    <p class="text">ダニエル電池で、<b>電流</b>が流れる向きはどれか。</p>
+    <ul class="choices">
+      <li class="picked"><span class="m">ア</span>導線の中を、銅板から亜鉛板へ</li>
+      <li><span class="m">イ</span>導線の中を、亜鉛板から銅板へ</li>
+      <li><span class="m">ウ</span>水溶液の中を、素焼きの板を通って</li>
+      <li><span class="m">エ</span>電流は流れない</li>
+    </ul>
+  </div>
+
+  <!-- Q8 ✗ 記述 -->
+  <div class="q ng">
+    <div class="qh"><span class="num">第8問</span><span class="type">記述</span><div class="meta"><span class="time slow">⏱ 2分31秒</span><span class="res ng">✗</span></div></div>
+    <p class="text">砂糖水には電流が流れない。その理由を「イオン」という言葉を使って説明しなさい。</p>
+    <div class="free wrong"><span class="lbl">タケシの解答（手書き入力）</span>砂糖は水にとけていないから、電流が流れない。</div>
+    <div class="model">模範解答：<b>砂糖は水にとけても電離せず、水溶液中にイオンができないから。</b></div>
+    <div class="ai-tag">🤖 つまずき候補：<b>電離と溶解の区別</b>（「とける」＝「電離する」と考えている）<span class="lnk">教科書 §1・§2 へ</span></div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q">
+    <div class="qh"><span class="num">第9問</span><span class="type">4択</span><div class="meta"><span class="time">⏱ 0分52秒</span><span class="res ok">○</span></div></div>
+    <p class="text">BTB溶液を加えた塩酸に、水酸化ナトリウム水溶液を少しずつ加えていった。<b>ちょうど中性になったとき</b>の色はどれか。</p>
+    <ul class="choices">
+      <li><span class="m">ア</span>黄色</li>
+      <li class="picked"><span class="m">イ</span>緑色</li>
+      <li><span class="m">ウ</span>青色</li>
+      <li><span class="m">エ</span>赤色</li>
+    </ul>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q">
+    <div class="qh"><span class="num">第10問</span><span class="type">4択</span><div class="meta"><span class="time">⏱ 1分10秒</span><span class="res ok">○</span></div></div>
+    <p class="text">塩酸と水酸化ナトリウム水溶液を中和させたとき、<b>水のほかにできる物質（塩）</b>はどれか。</p>
+    <ul class="choices">
+      <li><span class="m">ア</span>塩化水素</li>
+      <li><span class="m">イ</span>水酸化ナトリウム</li>
+      <li class="picked"><span class="m">ウ</span>塩化ナトリウム</li>
+      <li><span class="m">エ</span>硫酸バリウム</li>
+    </ul>
+  </div>
+
+  <!-- 解答終了 -->
+  <div class="finish">
+    <span class="btn done">✔ 解答終了（送信済み）</span>
+    <div class="hint">記録したもの：正誤・各問の解答時間・選んだ誤選択肢　※画面録画はしません</div>
+  </div>
+
+  <!-- AIの振り返り -->
+  <div class="review">
+    <div class="hd"><div class="av">🤖</div><div><div class="nm">AI先生の振り返り</div><div class="st">音声でもテキストでも答えられます</div></div></div>
+    <div class="log">
+      <div class="msg ai">お疲れさま！10問中7問正解、いい調子。<br>ひとつ聞かせて。<b>第3問で2分ちょっと止まっていた</b>よね。どこが引っかかった？
+        <span class="evi">📎 手がかり：第3問 ⏱2分14秒（平均の2.3倍）／ 選んだのは「水溶液の中」</span></div>
+      <div class="msg me">電子とイオンがごちゃごちゃになる。どっちが水の中を動くのかわからなくなった。</div>
+      <div class="msg ai">なるほど、「どっちがどこを通るか」だね。実は<b>第6問でも同じところ</b>でつまずいてる（素焼きの板を通るのは電子？イオン？）。<br>じゃあ教科書の<b>「電子は導線、イオンは水溶液」</b>の段落に補足を出しておくね。タケシはサッカー部だから、<b>⚽ サッカーで例えるボタン</b>も付けておく。</div>
+      <div class="msg me">おねがい。</div>
+      <div class="msg ai">もうひとつ、第8問の「砂糖はとけていないから」はどう？ 砂糖は実はとけてるんだけど…これは自分でも「あれ？」って思った？</div>
+      <div class="msg me">書いてて自信なかった。</div>
+      <div class="msg ai">OK、そこは<b>「とける」と「電離する」のちがい</b>だから、§1の電解質のところにも1行だけ補足を入れておくよ。準備できた！</div>
+    </div>
+    <div class="in"><div class="mic">🎤</div><div class="box">返事を入力…</div><div class="send">➤</div></div>
+    <div class="actions">
+      <span class="btn ai">📘 教科書へ（補足つき）</span>
+      <span class="btn sub">📝 類題を5問つくる</span>
+      <span class="btn sub" style="border-color:#e5e7eb;color:#6b7280">あとで</span>
+      <span class="note">確定したつまずき：①電子とイオンの移動経路（第3・6問）　②電離と溶解の区別（第8問）　→ 教科書 §4・§1 にレイヤーを差し込みます</span>
+    </div>
+  </div>
+
+</div>
+<div class="mock-banner">MOCKUP ― 静的モック／動作しません</div>
+</body>
+</html>
