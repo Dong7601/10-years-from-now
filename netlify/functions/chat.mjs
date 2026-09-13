@@ -18,7 +18,7 @@ export default async (request) => {
       parts: [{ text: item.text }],
     }));
     const prompt = `あなたは高校生向け英語学習チューターです。答えを丸投げせず、短く分かりやすく考え方を説明してください。日本語で答え、必要に応じて英語例文を一つ示してください。\n\n単元: ${unit}\n問題: ${question}\n質問: ${message}`;
-    const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent", {
+    const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent", {
       method: "POST",
       headers: {
         "x-goog-api-key": process.env.GEMINI_API_KEY,
