@@ -280,6 +280,8 @@ export function createServer() {
         "/tutor/app.js": "tutor/app.js",
         "/tutor/style.css": "tutor/style.css",
         "/tutor/questions.json": "tutor/questions.json",
+        "/mock/textbook.html": "mock/textbook.html",
+        "/mock/workbook.html": "mock/workbook.html",
       };
       if (!files[url.pathname])
         return reply(res, 404, "見つかりません。", "text/plain");

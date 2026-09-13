@@ -107,7 +107,7 @@ test("配布ファイルはキー・実装サーバーを含まない許可リ�
   await import("../scripts/build.mjs");
   assert.deepEqual(
     (await readdir(new URL("../dist/", import.meta.url))).sort(),
-    [".nojekyll", "index.html", "tutor"],
+    [".nojekyll", "index.html", "mock", "tutor"],
   );
 });
 

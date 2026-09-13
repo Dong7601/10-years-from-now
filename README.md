@@ -5,7 +5,29 @@ Hackathon project: 10年後のあたりまえ
 
 ## Demo
 
-GitHub Pages: https://manabiai.netlify.app/
+公開サイト（Netlify）: https://manabiai.netlify.app/
+
+## 発表直前の起動・操作（テキスト入力を推奨）
+
+1. このリポジトリで `npm start` を実行する（Node.js 22以上）。
+2. PC Chromeで `http://localhost:3000/tutor/` を開く。
+3. 同意にチェックし、画面共有のチェックを外す。**「音声記録なしで試す（振り返りは文字）」**を選ぶ。
+4. 黙って3問を解き、「AIと振り返る」へ進む。
+5. AIの質問に、下の入力欄から「whatとthatで迷った。whatは何という意味だから使えると思った。教科書に説明を追加してほしい」と入力する。
+6. 表示された提案の「やってみる」を押し、教科書への説明追加を見せる。
+
+音声APIの接続・出力は確認済みですが、**実マイクと画面録画の実機確認は未実施**です。発表では上記の文字入力ルートを前提にしてください。これは録画を含む完全デモとは区別します。APIの応答待ちはあります。
+
+OpenAI APIキーは `server/.env` に設定し、キー変更後はサーバーを再起動してください。キーをGitHubへ送らないでください。
+
+## 同梱の静的モック（別タスク成果物）
+
+- [中3理科の教科書画面](mock/textbook.html)
+- [中3理科の問題集画面](mock/workbook.html)
+
+今回の英語入口とは別の静的参考資料です。ローカルサーバーでも `/mock/textbook.html`・`/mock/workbook.html` から開けます。
+
+pushできない場合の準備手順は [GitHub送信手順](docs/GITHUB_HANDOFF.md) を参照してください。
 
 ## 音声AI学習入口（英語）
 
