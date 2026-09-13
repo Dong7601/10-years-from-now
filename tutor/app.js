@@ -971,6 +971,13 @@ async function endSession() {
   accountTime();
   state.phase = "ended";
   state.endedAt = new Date().toISOString();
+  $("endSession").disabled = true;
+  $("endSession").textContent = "終了処理中…";
+  $("tutorStatus").textContent = "録音・録画を停止しています";
+  $("endConfirmation").hidden = false;
+  $("endConfirmation").textContent =
+    "学習内容を確定しました。録音・録画を停止しています…";
+  addMessage("system", "学習を終了します。記録を保存しています…");
   clearInterval(tick);
   clearInterval(frameTick);
   event("session_ended");
@@ -979,8 +986,19 @@ async function endSession() {
     .map(
       (x) =>
         new Promise((resolve) => {
-          x.recorder.addEventListener("stop", resolve, { once: true });
-          x.recorder.stop();
+          let completed = false;
+          const done = () => {
+            if (completed) return;
+            completed = true;
+            resolve();
+          };
+          x.recorder.addEventListener("stop", done, { once: true });
+          setTimeout(done, 3000);
+          try {
+            x.recorder.stop();
+          } catch {
+            done();
+          }
         }),
     );
   disconnectVoice();
@@ -1023,7 +1041,10 @@ async function endSession() {
   $("finish").disabled = true;
   $("sendText").disabled = true;
   $("chatInput").disabled = true;
-  $("endSession").disabled = true;
+  $("endSession").textContent = "✓ 終了しました";
+  $("tutorStatus").textContent = "学習を終了しました";
+  $("endConfirmation").textContent =
+    "✓ 学習を終了しました。録音・録画は停止しています。必要な記録を下から保存できます。";
   showView("record");
   notice("学習を終了しました。必要な録音・録画とJSONを保存してください。");
   ending = false;

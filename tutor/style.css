@@ -599,6 +599,15 @@ form button {
   border-bottom: 1px solid var(--border);
   font-size: 12px;
 }
+.end-confirmation {
+  margin: 16px 0 22px;
+  padding: 17px 19px;
+  border: 1px solid #b9ddca;
+  border-radius: 12px;
+  background: #eef9f3;
+  color: #176a4c;
+  font-weight: 700;
+}
 .result strong {
   display: block;
   font-size: 14px;
