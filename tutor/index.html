@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#172646" />
+    <title>GROWBOOK｜まず自分で、そのあと一緒に。</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <a class="brand" href="../"><span class="logo">G.</span>GROWBOOK</a>
+        <div class="nav-label">YOUR LEARNING SPACE</div>
+        <nav>
+          <button class="active" data-view="lesson">◉　問題に取り組む</button
+          ><button data-view="book">▤　わたしの教科書</button
+          ><button data-view="record">◷　学習のきろく</button>
+        </nav>
+        <div class="side-bottom">
+          <span class="mini-orb">✦</span
+          ><b>ひとりで解く。<br />ひとりには、しない。</b>
+          <p>考えた道のりも、あなたの学びに。</p>
+          <a href="../">既存の英語モックへ ↗</a>
+        </div>
+      </aside>
+      <main>
+        <header>
+          <span
+            >英語コミュニケーションⅡ
+            <span class="muted">／ 関係詞・時制・語彙</span></span
+          >
+          <div class="badges">
+            <span id="voiceBadge" class="badge">音声 未接続</span
+            ><span id="recordBadge" class="badge">記録 停止中</span>
+          </div>
+        </header>
+        <div class="page">
+          <div id="notice" role="status" aria-live="polite">
+            接続設定を確認しています…
+          </div>
+          <section id="setup" class="setup">
+            <div>
+              <span class="eyebrow">LET'S THINK TOGETHER</span>
+              <h1>まず、自分で。<br />そのあと、一緒に。</h1>
+              <p>
+                まずは静かに3問。考えた道のりを記録します。<br />解き終わったらAIと振り返り、あなたに合った教科書へ。
+              </p>
+            </div>
+            <div class="start-card">
+              <span class="pill">約5分 · 英語の3問</span>
+              <h2>今日の学びを、はじめよう</h2>
+              <label
+                ><input
+                  id="consent"
+                  type="checkbox"
+                />音声・問題・会話をAIへ送り、この端末に学習記録を保存することに同意します。</label
+              ><label
+                ><input
+                  id="screenConsent"
+                  type="checkbox"
+                  checked
+                />解答中の画面を録画し、終了後に静止画をAIへ送信する</label
+              >
+              <p class="small">
+                個人情報のない画面を選んでください。顔の撮影はしません。PC
+                Chrome推奨。iPadは画面録画なしで利用します。
+              </p>
+              <button id="startVoice" class="primary full" disabled>
+                ●　記録を始めて、問題を解く</button
+              ><button id="startText" class="secondary full" disabled>
+                音声記録なしで試す（振り返りは文字）</button
+              ><span class="small"
+                >録音・録画は端末内。AIへの送信とローカル保存は別です。</span
+              >
+            </div>
+          </section>
+          <div id="workspace" hidden>
+            <div class="lesson-heading">
+              <div>
+                <span class="eyebrow">ENGLISH / 01</span>
+                <h1 id="pageTitle">英語の「なぜ」を、自分の言葉に。</h1>
+                <p id="pageSubtitle">
+                  正解だけじゃなく、どう考えたかを大切に。
+                </p>
+              </div>
+              <span id="timer" class="pill">00:00</span>
+            </div>
+            <div class="learning-grid">
+              <div>
+                <section id="lesson" class="view">
+                  <div class="steps" id="steps"></div>
+                  <article class="card question-card">
+                    <div class="card-meta">
+                      <span id="questionNumber"></span
+                      ><span id="concept" class="pill"></span>
+                    </div>
+                    <h2 id="questionText"></h2>
+                    <div
+                      id="questionPrompt"
+                      class="english-prompt"
+                      lang="en"
+                    ></div>
+                    <div id="choices" class="choices"></div>
+                    <div class="question-footer">
+                      <span class="small">選び直しても大丈夫。</span
+                      ><button id="nextQuestion" class="primary">
+                        次の問題へ →
+                      </button>
+                    </div>
+                  </article>
+                  <div class="hint-strip">
+                    ✦
+                    急がなくて大丈夫。解き終わったら、気になったところを一緒に振り返ろう。
+                  </div>
+                  <button id="finish" class="secondary full">
+                    解答を終えて、AIと振り返る
+                  </button>
+                </section>
+                <section id="book" class="view" hidden>
+                  <article class="card book-paper">
+                    <span class="eyebrow">MY TEXTBOOK</span>
+                    <h2>英語のかたちを、<br />意味からつかもう。</h2>
+                    <span class="pill">英語 · 関係詞・時制・語彙</span>
+                    <div class="book-base">
+                      <h3>that と what：前の名詞に注目</h3>
+                      <p>
+                        that は前にある名詞を説明します。what は「the thing
+                        that」を含むため、この例では前に the book を置きません。
+                      </p>
+                      <div class="route" lang="en">
+                        the book <strong>that</strong> changed my life<br />This
+                        is <strong>what</strong> I wanted.
+                      </div>
+                      <h3>現在完了：これまでの経験を話す</h3>
+                      <p lang="en">I have seen this movie three times.</p>
+                      <h3>affect と effect：文の中の役割を確認</h3>
+                      <p>
+                        affect は「影響を与える」という動詞。effect
+                        は通常「影響・効果」という名詞です。
+                      </p>
+                    </div>
+                    <div id="bookUpdates">
+                      <p class="empty">
+                        AIとの会話から提案を選ぶと、ここにあなた向けの説明が追加されます。
+                      </p>
+                    </div>
+                  </article>
+                </section>
+                <section id="record" class="view" hidden>
+                  <article class="card">
+                    <span class="eyebrow">YOUR LEARNING JOURNEY</span>
+                    <h2>今日、考えたこと。</h2>
+                    <div id="results"></div>
+                    <p class="small">
+                      長く考えた時間だけで「苦手」とは判断しません。音声の字幕は自動認識のため誤りを含む場合があります。
+                    </p>
+                    <div id="mediaDownloads"></div>
+                    <button id="export" class="secondary">
+                      学習コンテキストを保存（JSON）</button
+                    ><button id="clearLocal" class="secondary danger">
+                      端末の保存記録を削除
+                    </button>
+                  </article>
+                </section>
+              </div>
+              <aside class="card tutor">
+                <div class="tutor-head">
+                  <span class="orb">✦</span>
+                  <div>
+                    <b>あなたのAIチューター</b
+                    ><small id="tutorStatus">まだ接続していません</small>
+                  </div>
+                  <button
+                    id="mute"
+                    class="icon-button"
+                    aria-label="マイクをミュート"
+                    disabled
+                  >
+                    🎙
+                  </button>
+                </div>
+                <div id="chatLog" class="chat-log" aria-live="polite">
+                  <div class="message system">
+                    いまは自分のペースで解いてください。解き終わったら、記録した場面を一緒に振り返ります。解答中はAIから話しかけません。
+                  </div>
+                </div>
+                <div id="proposals"></div>
+                <div class="chat-controls">
+                  <button id="snapshot" class="text-button" disabled>
+                    ▧ 今の画面をAIに見せる
+                  </button>
+                  <form id="chatForm">
+                    <input
+                      id="chatInput"
+                      aria-label="AIへの質問"
+                      placeholder="解き終わったら、ここでも話せます"
+                      maxlength="2000"
+                    /><button
+                      class="primary"
+                      id="sendText"
+                      aria-label="質問を送信"
+                    >
+                      ↑
+                    </button>
+                  </form>
+                  <div class="bottom-controls">
+                    <button id="connectVoice" class="text-button">
+                      音声につなぐ</button
+                    ><button id="endSession" class="text-button danger">
+                      学習を終了
+                    </button>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+          <details class="operations">
+            <summary>デモ運用・接続設定</summary>
+            <p id="configInfo"></p>
+            <p>
+              実際の音声AIにはサーバー側のOpenAI APIキーが必要です。GitHub
+              Pagesだけでは動作しません。server/.env にキーを設定し、npm start
+              で起動してください。
+            </p>
+            <p>
+              録音・録画はこのブラウザのIndexedDBへ保存。JSONとメディアは別々にダウンロードしてください。本プロトタイプはローカルPC専用・最大20分です。更新案はこの画面内に追加し、元の英語モックを上書きしません。
+            </p>
+          </details>
+        </div>
+      </main>
+    </div>
+    <audio id="remoteAudio" autoplay></audio>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
