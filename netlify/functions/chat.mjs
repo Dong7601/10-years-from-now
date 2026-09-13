@@ -26,7 +26,7 @@ export default async (request) => {
       },
       body: JSON.stringify({
         contents: [...conversation, { role: "user", parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.45, maxOutputTokens: 700 },
+        generationConfig: { temperature: 0.45, maxOutputTokens: 1400 },
       }),
     });
     const payload = await response.json();
