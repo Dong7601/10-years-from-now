@@ -7,3 +7,7 @@
   to = "/.netlify/functions/chat"
   status = 200
 
+[[redirects]]
+  from = "/api/textbook"
+  to = "/.netlify/functions/textbook"
+  status = 200
