@@ -472,21 +472,25 @@ function handleRealtime(e) {
 async function shareScreen() {
   if (!navigator.mediaDevices?.getDisplayMedia) {
     notice(
-      "この端末はブラウザ画面録画に非対応です。マイクと解答・会話の記録で続けます。",
+      "この端末はブラウザ画面録画に非対応です。画面録画のチェックを外して再度開始してください。",
       true,
     );
     event("screen_unsupported");
-    return;
+    return false;
   }
   try {
     screen = await navigator.mediaDevices.getDisplayMedia({
-      video: { frameRate: 5 },
+      // Chromeの共有画面で、呼び出し元のGROWBOOKタブを候補に含めて優先する。
+      video: { frameRate: 5, displaySurface: "browser" },
       audio: false,
+      preferCurrentTab: true,
+      selfBrowserSurface: "include",
+      surfaceSwitching: "exclude",
     });
     if (state.phase === "ended") {
       screen.getTracks().forEach((track) => track.stop());
       screen = null;
-      return;
+      return false;
     }
     screenVideo = document.createElement("video");
     screenVideo.srcObject = screen;
@@ -506,9 +510,15 @@ async function shareScreen() {
       notice("画面共有が終了しました。音声・解答の記録は継続します。");
     };
     $("snapshot").disabled = dc?.readyState !== "open";
+    return true;
   } catch {
     event("screen_declined");
-    notice("画面は共有されていません。音声と解答の記録で続けます。");
+    screen = null;
+    notice(
+      "画面共有をキャンセルしました。録音・録画は開始していません。もう一度開始してください。",
+      true,
+    );
+    return false;
   }
 }
 function snapshot(manual = false, reason = "question_or_answer") {
@@ -670,26 +680,22 @@ async function start(withVoice) {
   if (!$("consent").checked) return;
   state.phase = "preparing";
   reviewWithVoice = withVoice;
-  state.startedAt = new Date().toISOString();
-  startClock = performance.now();
-  questionClock = 0;
   $("setup").hidden = true;
   notice("記録の準備中です。許可後に問題を表示します。");
-  event("session_started", {
+  event("session_preparing", {
     consent: true,
     screenConsent: $("screenConsent").checked,
   });
-  renderQuestion();
-  tick = setInterval(() => {
-    const secs = Math.floor((performance.now() - startClock) / 1000);
-    $("timer").textContent =
-      `${String(Math.floor(secs / 60)).padStart(2, "0")}:${String(secs % 60).padStart(2, "0")}`;
-    if (secs >= 1200) endSession();
-  }, 1000);
-  // 画面共有はユーザー操作直後に開始。マイク許可前に他のawaitを挟まない。
-  const sharing = $("screenConsent").checked
-    ? shareScreen()
-    : Promise.resolve();
+  // Chromeの仕様上、画面共有はクリック直後に要求する必要がある。
+  // 共有をキャンセルした場合は、マイクだけが録音状態にならないよう開始自体を中止する。
+  if ($("screenConsent").checked && !(await shareScreen())) {
+    state.phase = "idle";
+    $("setup").hidden = false;
+    $("workspace").hidden = true;
+    recordingStatus();
+    voiceStatus("音声 未接続");
+    return;
+  }
   if (withVoice) {
     try {
       mic = await navigator.mediaDevices.getUserMedia({
@@ -701,9 +707,22 @@ async function start(withVoice) {
       event("microphone_declined");
     }
   }
-  await sharing;
   if (state.phase === "ended") return;
+  state.startedAt = new Date().toISOString();
+  startClock = performance.now();
+  questionClock = 0;
   state.phase = "solving";
+  event("session_started", {
+    consent: true,
+    screenShared: Boolean(screen),
+    microphoneRecording: Boolean(mic),
+  });
+  tick = setInterval(() => {
+    const secs = Math.floor((performance.now() - startClock) / 1000);
+    $("timer").textContent =
+      `${String(Math.floor(secs / 60)).padStart(2, "0")}:${String(secs % 60).padStart(2, "0")}`;
+    if (secs >= 1200) endSession();
+  }, 1000);
   questionClock = performance.now();
   $("workspace").hidden = false;
   window.scrollTo({ top: 0 });
