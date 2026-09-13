@@ -1,4 +1,4 @@
-# GitHubへの送信手順（準備済み・fork/PRは未実行）
+# GitHubへの送信手順
 
 まず `gh auth status` で接続アカウントを確認。以下は `tyoshida-green` の場合です。別アカウントならURLとhead指定を読み替えてください。
 
@@ -17,7 +17,7 @@ git log --oneline --left-right HEAD...origin/main
 以下は外部にforkとPRを作成します。実行指示を受けてから行う準備手順です。元のoriginは変更しません。
 
 ```sh
-gh repo fork Dong7601/10-years-from-now --clone=false --remote=false
+gh repo fork Dong7601/10-years-from-now --clone=false
 git push https://github.com/tyoshida-green/10-years-from-now.git HEAD:growbook-demo
 gh pr create --repo Dong7601/10-years-from-now --base main --head tyoshida-green:growbook-demo --title "GROWBOOKの記録・振り返り入口と静的モックを追加" --body-file docs/PR_BODY.md
 ```
