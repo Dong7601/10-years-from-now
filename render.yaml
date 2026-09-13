@@ -1,0 +1,19 @@
+# Render Blueprint: ダッシュボードで「New → Blueprint」からこのリポジトリを選ぶと、この設定でWeb Serviceが作られる。
+# OPENAI_API_KEY だけはダッシュボードで手入力する（sync: false）。
+services:
+  - type: web
+    name: growbook-tutor
+    runtime: node
+    plan: free
+    buildCommand: "true"
+    startCommand: npm start
+    healthCheckPath: /api/tutor/health
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: REALTIME_MODEL
+        value: gpt-realtime-2.1
+      - key: TEXT_MODEL
+        value: gpt-5.6-sol
+      - key: NODE_VERSION
+        value: "22"

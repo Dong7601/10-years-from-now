@@ -46,3 +46,11 @@ GitHub Pagesは静的プレビューのみ。ライブ音声・教科書生成�
 詳しい実演手順・制約・データの扱いは [DEMO.md](DEMO.md) を参照してください。
 
 参照する英語問題・画面: https://manabiai.netlify.app/ 。先頭3問を入口デモに採用。既存のGeminiチャットは維持し、新しい音声・記録APIは `/api/tutor/` に分離しています。
+
+## Render で公開する（音声入口を誰でも使えるようにする）
+
+1. Render ダッシュボード → **New → Blueprint** → GitHub の `10-years-from-now` を選ぶ（`render.yaml` を読んで Web Service が作られる）
+2. 環境変数 `OPENAI_API_KEY` を入力して Apply。`RENDER_EXTERNAL_HOSTNAME` は Render が自動で渡すので、`PUBLIC_HOST` の手入力は不要
+3. デプロイ完了後 `https://<サービス名>.onrender.com/tutor/` を開く（HTTPSなのでマイクも使える）
+
+注意: 認証は無いので、URLを知った人は誰でも API クレジットを消費できる。OpenAI 側で利用上限を設定し、URLを公開資料に載せない。無料プランはスリープするため、デモ直前に一度開いて起こしておく。
